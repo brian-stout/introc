@@ -4,7 +4,6 @@ int main(void)
 {
     for (int i = -4; i <= 4; ++i){
         if (i < 0){
-
             if ((i % 2) == 0){
                 printf("%d is negative and even\n", i);
             }
@@ -13,16 +12,18 @@ int main(void)
             }
 
         }
-        else{
-            if (i == 0){
-                printf("%d is even\n", i);
-            }
-            else if ((i % 2) == 0){
+
+        else if (i > 0){
+            if ((i % 2) == 0){
                 printf("%d is positive and even\n", i);
             }
             else{
                 printf("%d is positive and odd\n", i);
             }
+        }
+
+        else{
+            printf("%d is even\n", i);
         }
     }
 }
