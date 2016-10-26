@@ -21,7 +21,7 @@ int main(int argc, char *argv[]){
 	fgets(buf, sizeof(buf), fp);
 	puts(buf);
 
-	if(fclose(fp) == 0){
+	if(fclose(fp)){
 		perror("Unable to close file");
 		return EX_IOERR;
 	}
