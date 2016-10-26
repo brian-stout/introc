@@ -1,10 +1,11 @@
 #include <stdio.h>
+#include <sysexits.h>
 
 int main(int argc, char *argv[]){
 
 	if(argc != 2){
 		fprintf(stderr, "Usage: %s <file>\n", argv[0]);
-		return 1;
+		return EX_USAGE;
 	}
 
 	FILE *fp = fopen(argv[1], "r");
@@ -12,7 +13,7 @@ int main(int argc, char *argv[]){
 	//NULL we can treat like a false value
 	if(!fp){
 		perror("Unable to open file for reading");
-		return 1;
+		return EX_NOINPUT;
 	}
 	
 	char buf[128];
@@ -20,6 +21,10 @@ int main(int argc, char *argv[]){
 	fgets(buf, sizeof(buf), fp);
 	puts(buf);
 
-	fclose(fp);
+	if(fclose(fp) == 0){
+		perror("Unable to close file");
+		return EX_IOERR;
+	}
+	
 
 }
