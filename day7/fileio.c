@@ -18,8 +18,9 @@ int main(int argc, char *argv[]){
 	
 	char buf[128];
 
-	fgets(buf, sizeof(buf), fp);
-	puts(buf);
+	while(fgets(buf, sizeof(buf), fp)){
+		printf("%s", buf);
+	}
 
 	if(fclose(fp)){
 		perror("Unable to close file");
