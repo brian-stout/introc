@@ -1,8 +1,13 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-struct money init(int dollars, int cents);
+struct money money_init(int dollars, int cents);
 
-struct money add(struct money a, struct money b);
+struct money money_add(struct money a, struct money b);
+
+struct money money_input(void);
+
+void money_print(struct money m);
 
 struct money{
 
@@ -13,32 +18,42 @@ struct money{
 int main(void)
 {
 	struct money a, b, c;
-	a = init(13,312);
-	b = init(5,642);
-	c = add(a, b);
-	printf("$%d.%d\n", c.dollars, c.cents);
+	a = money_init(3,10);
+	b = money_input();
+	c = money_add(a, b);
+	money_print(c);
 }
 
 
-struct money init(int dollars, int cents){
+struct money money_init(int dollars, int cents){
 
-	struct money s;
-	s.dollars = dollars;
-	s.cents = cents;
+	struct money s = {dollars, cents};
+	if (s.cents >= 100){
+		s.dollars +=  s.cents / 100;
+		s.cents %= 100;
+	}
 	return s;
 		
 }
 
-struct money add(struct money a, struct money b){
+struct money money_add(struct money a, struct money b){
+	return money_init(a.dollars + b.dollars, a.cents + b.cents);
+}
 
-	struct money c;
-	c.dollars = a.dollars + b.dollars;
-	c.cents = a.cents + c.cents;
-	if (c.cents >= 100){
-		c.dollars += (c.cents/100);
-		//Finds how many multiples of 100 there are, then multiplies it again
-		//To get an even number to subtract to get the remainder
-		c.cents -= (c.cents/100*100);
-	}
-	return c;
+struct money money_input(void){
+	char buf[32];
+
+	printf("Dollar amount: ");
+	fgets(buf, sizeof(buf), stdin);
+	int dollars = strtol(buf, NULL, 10);
+
+	printf("cent amount: ");
+	fgets(buf, sizeof(buf), stdin);
+	int cents = strtol(buf, NULL, 10);	
+
+	return money_init(dollars, cents);
+}
+
+void money_print(struct money m){
+	printf("$%d.%02d ", m.dollars, m.cents);
 }
